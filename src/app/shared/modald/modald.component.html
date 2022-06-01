@@ -1,46 +1,52 @@
-<div class="mb-2 mt-2">
-  <button
-    class="btn btn-outline-primary btn-sm"
-    name="btnOpen"
-    type="button"
-    (click)="open(modalBuscar)"
-    #btnOpen
-  >
-    <i class="fa fa-plus"></i>
-    Abrir Modal
-  </button>
-</div>
-<ng-template #modalBuscar let-c="close" let-d="dismiss">
+<ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title">Tangananica</h4>
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
     <button
       type="button"
-      class="close"
+      class="btn-close"
       aria-label="Close"
-      (click)="d('Cross click')"
+      (click)="modal.dismiss('Cross click')"
     >
-      <span aria-hidden="true">&times;</span>
+      X
     </button>
   </div>
   <div class="modal-body">
-    <h1>Aqui va algo</h1>
+    <form>
+      <div class="mb-3">
+        <label for="dateOfBirth">Date of birth</label>
+        <div class="input-group">
+          <input
+            id="dateOfBirth"
+            class="form-control"
+            placeholder="yyyy-mm-dd"
+            name="dp"
+            ngbDatepicker
+            #dp="ngbDatepicker"
+          />
+          <button
+            class="btn btn-outline-secondary calendar"
+            (click)="dp.toggle()"
+            type="button"
+          ></button>
+        </div>
+      </div>
+    </form>
   </div>
-  <div class="modal-footer" *ngIf="!disabledInputSearch">
+  <div class="modal-footer">
     <button
       type="button"
-      class="btn btn-outline-primary"
-      (click)="d('Cancel click')"
+      class="btn btn-outline-dark"
+      (click)="modal.close('Save click')"
     >
-      Cancelar
-    </button>
-    <button
-      [disabled]="buttonDisabled"
-      type="button"
-      class="btn btn-outline-primary"
-      (click)="search($event)"
-    >
-      <i class="fa fa-search"></i>
-      Buscar
+      Save
     </button>
   </div>
 </ng-template>
+
+<button class="btn btn-lg btn-outline-primary" (click)="open(content)">
+  Launch demo modal
+</button>
+
+<hr />
+
+<pre>{{ closeResult }}</pre>

@@ -1,48 +1,42 @@
+import { Component, Output, EventEmitter } from '@angular/core';
 import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  Output,
-  EventEmitter,
-} from '@angular/core';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+  NgbModal,
+  NgbModalRef,
+  ModalDismissReasons,
+} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-modald',
   templateUrl: './modald.component.html',
-  styleUrls: ['./modald.component.css'],
-  styles: ['#btnOpen { margin: 0px 0px 15px 0px; }'],
-  encapsulation: ViewEncapsulation.None,
 })
-export class ModaldComponent implements OnInit {
+export class ModaldComponent {
   @Output() funcion: EventEmitter<any> = new EventEmitter();
   @Output() refresh: EventEmitter<any> = new EventEmitter();
   public buttonDisabled: boolean;
-  private _NgbModalRef: NgbModalRef;
+  closeResult = '';
 
   constructor(private modalService: NgbModal) {}
 
-  public open(content) {
-    this._NgbModalRef = this.modalService.open(content, {
-      size: 'lg',
-      centered: false,
-    });
-    this._NgbModalRef.result.then(
-      (result) => {},
-      (reason) => {
-        console.log('CLOSE REASON => ', reason);
-      }
-    );
+  open(content) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (result) => {
+          this.closeResult = `Closed with: ${result}`;
+        },
+        (reason) => {
+          this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        }
+      );
   }
 
-  public closeModal(event) {
-    this._NgbModalRef.close();
-  }
-  public search(event) {
-    console.log('GG');
-  }
-
-  ngOnInit() {
-    this.buttonDisabled = false;
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

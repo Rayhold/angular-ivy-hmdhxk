@@ -6,6 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [NgbModule],
   declarations: [SharedComponent],
   exports: [SharedComponent],
+  bootstrap: [SharedComponent],
   providers: [],
 })
 export class SharedComponentModule {}
